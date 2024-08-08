@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+public class NQueens {
+
+    static int[][] board = new int[100][100];
+
+    // Display the board with queens placed
+    static void display(int[] positions, int n) {
+        // Clear the board
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = 0;
+            }
+        }
+
+        // Place queens on the board
+        for (int i = 0; i < n; i++) {
+            board[i][positions[i]] = 1;
+        }
+
+        // Print the board
+        System.out.println();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Check if the queen can be placed on the board
+    static int place(int[] positions, int k) {
+        for (int i = 0; i < k; i++) {
+            // Check if two queens are in the same column or diagonal
+            if (positions[i] == positions[k] || Math.abs(positions[i] - positions[k]) == Math.abs(i - k)) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] positions = new int[25];
+        int n, k;
+
+        System.out.println("Enter the number of queens:");
+        n = scanner.nextInt();
+
+        System.out.println("The solutions to the N-Queens problem are:");
+        n--;  // Adjust n to be 0-based for array indexing
+
+        for (positions[0] = 0, k = 0; k >= 0; positions[k]++) {
+            // Find a valid position for the current queen
+            while (positions[k] <= n && !place(positions, k)) {
+                positions[k]++;
+            }
+
+            // If a valid position is found
+            if (positions[k] <= n) {
+                // If all queens are placed, display the board
+                if (k == n) {
+                    display(positions, n + 1);
+                } else {
+                    // Move to the next queen
+                    k++;
+                    positions[k] = -1;
+                }
+            } else {
+                // Backtrack
+                k--;
+            }
+        }
+        
+        scanner.close();
+    }
+}
