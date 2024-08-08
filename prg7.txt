@@ -1,0 +1,82 @@
+import java.util.Scanner;
+
+public class Dijkstra {
+
+    // Method to implement Dijkstra's algorithm
+    public static void dijkstra(int n, int v, int[][] cost, int[] dist) {
+        int[] flag = new int[10]; // To keep track of visited nodes
+        int i, u, count, w, min;
+
+        // Initialize distances and flags
+        for (i = 1; i <= n; i++) {
+            flag[i] = 0;
+            dist[i] = cost[v][i];
+        }
+        flag[v] = 1; // Mark the source vertex as visited
+        dist[v] = 0; // Distance to itself is 0
+        count = 2;
+
+        // Start the algorithm
+        while (count <= n) {
+            min = 999;
+            u = 0;
+
+            // Find the vertex with the minimum distance
+            for (w = 1; w <= n; w++) {
+                if (dist[w] < min && flag[w] == 0) {
+                    min = dist[w];
+                    u = w;
+                }
+            }
+
+            flag[u] = 1; // Mark the selected vertex as visited
+            count++;
+
+            // Update the distance array
+            for (w = 1; w <= n; w++) {
+                if ((dist[u] + cost[u][w] < dist[w]) && flag[w] == 0) {
+                    dist[w] = dist[u] + cost[u][w];
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int n, v;
+        int[][] cost = new int[10][10];
+        int[] dist = new int[10];
+        Scanner scanner = new Scanner(System.in);
+
+        // Input the number of nodes
+        System.out.print("Enter the number of nodes: ");
+        n = scanner.nextInt();
+
+        // Input the cost matrix
+        System.out.println("\nEnter the cost matrix:");
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                cost[i][j] = scanner.nextInt();
+                if (cost[i][j] == 0) {
+                    cost[i][j] = 999; // Assume 999 as infinity
+                }
+            }
+        }
+
+        // Input the source vertex
+        System.out.print("\nEnter the source vertex: ");
+        v = scanner.nextInt();
+
+        // Execute Dijkstra's algorithm
+        dijkstra(n, v, cost, dist);
+
+        // Output the shortest paths
+        System.out.println("Shortest paths from vertex " + v + ":");
+        for (int j = 1; j <= n; j++) {
+            if (j != v) {
+                System.out.println(v + " -> " + j + " ::::: " + dist[j]);
+            }
+        }
+
+        scanner.close();
+    }
+}
