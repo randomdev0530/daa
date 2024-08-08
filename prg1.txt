@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Main {
+    public static int[] randomTester(int max, int min) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter the size of the array: ");
+        int len = s.nextInt();
+        int[] arr = new int[len];
+        int i = 0;
+        while (i < len) {
+            int randomValue = (int)(Math.random() * (max - min + 1)) + min;
+            arr[i] = randomValue;
+            System.out.print(arr[i] + " ");
+            i++;
+        }
+        System.out.println();
+        return arr;
+    }
+
+    static void selectionSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[minIdx]) {
+                    minIdx = j;
+                }
+            }
+            if (minIdx != i) {
+                int temp = arr[i];
+                arr[i] = arr[minIdx];
+                arr[minIdx] = temp;
+            }
+        }
+    }
+
+    public static void arrPrint(int[] arr) {
+        for (int value : arr) {
+            System.out.print(value + "\t");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int[] arr = randomTester(1000, 1);
+        long startTime = System.nanoTime();
+        selectionSort(arr);
+        long timeTaken = System.nanoTime() - startTime;
+        arrPrint(arr);
+        System.out.println("SelectionSort - Time taken: " + timeTaken + " ns | Length - " + arr.length);
+    }
+}
