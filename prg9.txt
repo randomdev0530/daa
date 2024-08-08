@@ -1,0 +1,75 @@
+import java.util.Scanner;
+
+public class Kruskal {
+    static int i, j, k, a, b, u, v, n, ne = 1;
+    static int min, mincost = 0;
+    static int[][] cost = new int[9][9];
+    static int[] parent = new int[9];
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Introduction message
+        System.out.println("\n\n\tImplementation of Kruskal's Algorithm\n\n");
+
+        // Input number of vertices
+        System.out.print("Enter the number of vertices: ");
+        n = scanner.nextInt();
+
+        // Input cost adjacency matrix
+        System.out.println("\nEnter the cost adjacency matrix:");
+        for (i = 1; i <= n; i++) {
+            for (j = 1; j <= n; j++) {
+                cost[i][j] = scanner.nextInt();
+                if (cost[i][j] == 0) {
+                    cost[i][j] = 999; // Assume 999 as infinity
+                }
+            }
+        }
+
+        // Kruskal's algorithm to find Minimum Cost Spanning Tree (MST)
+        System.out.println("\nThe edges of the Minimum Cost Spanning Tree are:");
+        while (ne < n) {
+            for (i = 1, min = 999; i <= n; i++) {
+                for (j = 1; j <= n; j++) {
+                    if (cost[i][j] < min) {
+                        min = cost[i][j];
+                        a = u = i;
+                        b = v = j;
+                    }
+                }
+            }
+
+            u = find(u);
+            v = find(v);
+
+            if (uni(u, v) == 1) {
+                System.out.println(ne++ + " edge (" + a + "," + b + ") = " + min);
+                mincost += min;
+            }
+
+            cost[a][b] = cost[b][a] = 999;
+        }
+
+        // Output the minimum cost
+        System.out.println("\nMinimum cost = " + mincost);
+        scanner.close();
+    }
+
+    // Method to find the parent of a node
+    public static int find(int i) {
+        while (parent[i] != 0) {
+            i = parent[i];
+        }
+        return i;
+    }
+
+    // Method to unify two subsets
+    public static int uni(int i, int j) {
+        if (i != j) {
+            parent[j] = i;
+            return 1;
+        }
+        return 0;
+    }
+}
