@@ -1,0 +1,63 @@
+import java.util.Scanner;
+
+public class Knapsack {
+
+    // Method to return the maximum of two values
+    public static int max(int a, int b) {
+        return a > b ? a : b;
+    }
+
+    // Method to solve the Knapsack problem using dynamic programming
+    public static void knapsack(int n, int[] w, int m, int[][] v, int[] p) {
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0 || j == 0) {
+                    v[i][j] = 0;
+                } else if (j < w[i]) {
+                    v[i][j] = v[i - 1][j];
+                } else {
+                    v[i][j] = max(v[i - 1][j], v[i - 1][j - w[i]] + p[i]);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input section
+        System.out.println("Enter the number of objects:");
+        int n = scanner.nextInt();
+
+        int[] w = new int[n + 1]; // Array to store weights
+        int[] p = new int[n + 1]; // Array to store profits
+        int[][] v = new int[n + 1][10]; // 2D array to store the knapsack values
+
+        System.out.println("Enter the weights of " + n + " objects:");
+        for (int i = 1; i <= n; i++) {
+            w[i] = scanner.nextInt();
+        }
+
+        System.out.println("Enter the profits of " + n + " objects:");
+        for (int i = 1; i <= n; i++) {
+            p[i] = scanner.nextInt();
+        }
+
+        System.out.println("Enter the capacity of the Knapsack:");
+        int m = scanner.nextInt();
+
+        // Perform the Knapsack computation
+        knapsack(n, w, m, v, p);
+
+        // Output the result
+        System.out.println("The output is:");
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                System.out.print(v[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        scanner.close();
+    }
+}
