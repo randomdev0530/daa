@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class FloydWarshall {
+    static int[][] a = new int[10][10];
+    static int n;
+
+    // Method to implement the Floyd-Warshall algorithm
+    public static void floyd() {
+        for (int k = 1; k <= n; k++) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= n; j++) {
+                    if ((a[i][k] + a[k][j]) < a[i][j]) {
+                        a[i][j] = a[i][k] + a[k][j];
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input the number of nodes
+        System.out.print("\nEnter the number of nodes: ");
+        n = scanner.nextInt();
+
+        // Input the cost adjacency matrix
+        System.out.println("\nEnter the cost adjacency matrix:");
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                a[i][j] = scanner.nextInt();
+            }
+        }
+
+        // Perform the Floyd-Warshall algorithm
+        floyd();
+
+        // Output the shortest path matrix
+        System.out.println("\nThe shortest path matrix is:");
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                System.out.print(a[i][j] + "\t");
+            }
+            System.out.println();
+        }
+
+        scanner.close();
+    }
+}
