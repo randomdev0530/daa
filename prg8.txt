@@ -1,0 +1,59 @@
+import java.util.Scanner;
+
+public class PrimsAlgorithm {
+    static int a, b, u, v, n, i, j, ne = 1;
+    static int min, mincost = 0;
+    static int[] visited = new int[10];
+    static int[][] cost = new int[10][10];
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input the number of nodes
+        System.out.print("\nEnter the number of nodes: ");
+        n = scanner.nextInt();
+
+        // Input the adjacency matrix
+        System.out.println("\nEnter the adjacency matrix:");
+        for (i = 1; i <= n; i++) {
+            for (j = 1; j <= n; j++) {
+                cost[i][j] = scanner.nextInt();
+                if (cost[i][j] == 0) {
+                    cost[i][j] = 999; // Assume 999 as infinity
+                }
+            }
+        }
+
+        visited[1] = 1; // Start with the first node
+
+        // Prim's algorithm to find Minimum Spanning Tree (MST)
+        while (ne < n) {
+            for (i = 1, min = 999; i <= n; i++) {
+                for (j = 1; j <= n; j++) {
+                    if (cost[i][j] < min) {
+                        if (visited[i] != 0) {
+                            min = cost[i][j];
+                            a = u = i;
+                            b = v = j;
+                        }
+                    }
+                }
+            }
+
+            // If the selected edge leads to an unvisited vertex, include it in the MST
+            if (visited[u] == 0 || visited[v] == 0) {
+                System.out.printf("\nEdge %d: (%d %d) cost: %d", ne++, a, b, min);
+                mincost += min;
+                visited[b] = 1;
+            }
+
+            // Remove the selected edge from further consideration
+            cost[a][b] = cost[b][a] = 999;
+        }
+
+        // Output the minimum cost of the MST
+        System.out.println("\nMinimum cost = " + mincost);
+
+        scanner.close();
+    }
+}
